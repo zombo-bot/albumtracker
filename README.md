@@ -2,8 +2,6 @@
 
 A React web app for discovering albums, playing 30-second previews (or full tracks via Deezer when available), keeping a personal listening log with statuses/ratings/notes, and getting AI-powered album recommendations based on your own saved collection.
 
-## Live link
-
 ## Screenshot
 
 ## Features
