@@ -39,10 +39,10 @@ export default function AlbumPlayback({ title, artist, tracks }) {
           allow="encrypted-media; clipboard-write"
           loading="lazy"
         />
-        <p className="card-meta">
-          Only previews playing? Log in to Deezer in this browser, then reload.{" "}
-          <button className="link-btn" onClick={() => switchTo("preview")}>Back to previews</button>
+        <p className="card-meta source-note">
+          Only hearing previews? Log in to Deezer in this browser, then reload.
         </p>
+        <button className="chip" onClick={() => switchTo("preview")}>Switch back to previews</button>
       </div>
     );
   }
@@ -60,10 +60,10 @@ export default function AlbumPlayback({ title, artist, tracks }) {
           allowFullScreen
           loading="lazy"
         />
-        <p className="card-meta">
-          Playing from YouTube.{" "}
-          <button className="link-btn" onClick={() => switchTo("preview")}>Back to previews</button>
+        <p className="card-meta source-note">
+          Playing from YouTube.
         </p>
+        <button className="chip" onClick={() => switchTo("preview")}>Switch back to previews</button>
       </div>
     );
   }
@@ -71,8 +71,8 @@ export default function AlbumPlayback({ title, artist, tracks }) {
   return (
     <>
       {(deezerId || youtubeId) && (
-        <div className="deezer-callout">
-          <p>Want to hear more than the 30-second previews?</p>
+        <div className="more-callout">
+          <p>These are 30-second previews. Want the full album?</p>
           <div className="callout-actions">
             {deezerId && (
               <>

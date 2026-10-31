@@ -20,6 +20,9 @@ export function CollectionProvider({ children }) {
         status,
         rating: 0,
         notes: "",
+        // Lets the collection sort by "recently added". Albums saved before
+        // this existed simply have no date and sort last.
+        addedAt: Date.now(),
       },
     }));
 

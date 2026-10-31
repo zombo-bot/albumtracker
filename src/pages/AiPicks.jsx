@@ -1,12 +1,12 @@
 import { useState } from "react";
-import AlbumCard from "../components/AlbumCard.jsx";
+import AlbumCard, { AlbumCardSkeletons } from "../components/AlbumCard.jsx";
 import { useCollection } from "../context/CollectionContext.jsx";
 import { searchAlbums } from "../services/itunes.js";
 import { getRecommendations } from "../services/ai.js";
 
 const MIN_ALBUMS = 3;
 
-export default function AiPicks({ openAlbum }) {
+export default function AiPicks({ openAlbum, goDiscover }) {
   const { albums } = useCollection();
   const [picks, setPicks] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -52,46 +52,53 @@ export default function AiPicks({ openAlbum }) {
 
   return (
     <section className="page">
-      <h2 className="page-title">Recommendations</h2>
+      <h2 className="page-title">Picks for you</h2>
 
       {saved.length < MIN_ALBUMS ? (
-        <p className="notice">
-          Save at least {MIN_ALBUMS} albums to your collection so there's a listening pattern to
-          learn from. You have {saved.length}.
-        </p>
+        <div className="empty">
+          <p>
+            Picks learn from your collection. Save at least {MIN_ALBUMS} albums first; you have {saved.length}.
+          </p>
+          <button className="primary" onClick={goDiscover}>Find an album</button>
+        </div>
       ) : (
         <>
           <p className="notice">
             Based on the {saved.length} albums in your collection
             {ratedCount > 0 ? `, ${ratedCount} of them rated` : ""}.
-            {ratedCount === 0 && " Add star ratings on the album pages for better results."}
+            {ratedCount === 0 && " Rate a few on their album pages for better results."}
           </p>
           <div className="search">
             <button className="primary" onClick={ask} disabled={loading}>
-              {loading ? "Analyzing your taste…" : picks ? "Get new picks" : "Get recommendations"}
+              {loading ? "Reading your taste…" : picks ? "Get new picks" : "Get picks"}
             </button>
           </div>
         </>
       )}
 
-      {error && <p className="notice error">{error}</p>}
+      {error && <p className="notice error">{error} Try again in a moment.</p>}
 
       {picks?.length === 0 && (
-        <p className="notice">No new matching albums found. Try again for a different set.</p>
+        <p className="notice">Nothing new matched this time. Get new picks for a different set.</p>
       )}
 
-      <div className="grid">
-        {picks?.map(({ album, reason }) => (
-          <AlbumCard
-            key={album.collectionId}
-            title={album.collectionName}
-            artist={album.artistName}
-            art={album.artworkUrl100}
-            meta={reason}
-            onOpen={() => openAlbum(album.collectionId)}
-          />
-        ))}
-      </div>
+      {loading ? (
+        <AlbumCardSkeletons count={8} />
+      ) : (
+        <div className="grid">
+          {picks?.map(({ album, reason }) => (
+            <AlbumCard
+              key={album.collectionId}
+              albumId={album.collectionId}
+              title={album.collectionName}
+              artist={album.artistName}
+              art={album.artworkUrl100}
+              meta={reason}
+              onOpen={() => openAlbum(album.collectionId)}
+            />
+          ))}
+        </div>
+      )}
     </section>
   );
 }

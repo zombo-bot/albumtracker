@@ -11,6 +11,7 @@ export default function StatusSelect({ value, onChange }) {
         <button
           key={s.id}
           className={`chip ${value === s.id ? "on" : ""}`}
+          aria-pressed={value === s.id}
           onClick={() => onChange(s.id)}
         >
           {s.label}
